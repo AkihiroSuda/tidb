@@ -200,6 +200,23 @@ CREATE TABLE if not exists performance_schema.events_waits_history_long (
   FLAGS int(10) unsigned DEFAULT NULL
 ); 
 `
+
+	CreateSomething4 = `CREATE TABLE if not exists performance_schema.threads (
+  THREAD_ID bigint(20) unsigned NOT NULL,
+  NAME varchar(128) NOT NULL,
+  TYPE varchar(10) NOT NULL,
+  PROCESSLIST_ID bigint(20) unsigned DEFAULT NULL,
+  PROCESSLIST_USER varchar(16) DEFAULT NULL,
+  PROCESSLIST_HOST varchar(60) DEFAULT NULL,
+  PROCESSLIST_DB varchar(64) DEFAULT NULL,
+  PROCESSLIST_COMMAND varchar(16) DEFAULT NULL,
+  PROCESSLIST_TIME bigint(20) DEFAULT NULL,
+  PROCESSLIST_STATE varchar(64) DEFAULT NULL,
+  PROCESSLIST_INFO longtext,
+  PARENT_THREAD_ID bigint(20) unsigned DEFAULT NULL,
+  ROLE varchar(64) DEFAULT NULL,
+  INSTRUMENTED enum('YES','NO') NOT NULL
+);`
 	// CreateTiDBTable is the SQL statement creates a table in system db.
 	// This table is a key-value struct contains some information used by TiDB.
 	// Currently we only put bootstrapped in it which indicates if the system is already bootstrapped.
@@ -293,6 +310,7 @@ func doDDLWorks(s Session) {
 	mustExecute(s, CreateSomething1)
 	mustExecute(s, CreateSomething2)
 	mustExecute(s, CreateSomething3)
+	mustExecute(s, CreateSomething4)
 	// Create TiDB table.
 	mustExecute(s, CreateTiDBTable)
 }
